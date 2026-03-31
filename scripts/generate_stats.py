@@ -201,31 +201,32 @@ def compute_grade(stats):
 
 def get_grade_color(grade):
     colors = {
-        "S": "#8250df",     # Purple
-        "A+": "#2da44e",    # Green
-        "A": "#2da44e",
-        "A-": "#2da44e",
-        "B+": "#bf8700",    # Yellow/Orange
-        "B": "#bf8700",
-        "C+": "#cf222e",    # Red
-        "C": "#cf222e",
-        "D": "#6e7781",     # Gray
-        "F": "#6e7781"
+        "S": "#bc8cff",     # Bright Purple
+        "A+": "#39d353",    # GitHub Contribution Bright Green
+        "A": "#39d353",
+        "A-": "#39d353",
+        "B+": "#e3b341",    # Bright Yellow/Orange
+        "B": "#e3b341",
+        "C+": "#f85149",    # Bright Red
+        "C": "#f85149",
+        "D": "#8b949e",     # Muted Gray
+        "F": "#8b949e"
     }
-    return colors.get(grade, "#2da44e") # Defaults to green
+    return colors.get(grade, "#39d353") # Defaults to green
 
 def generate_stats_svg(stats):
     card_width = 400
     card_height = 140
     padding = 20
     
-    bg_color = "#ffffff"
-    border_color = "#d0d7de"
-    text_primary = "#24292f"
-    text_secondary = "#57606a"
+    # GitHub Dark Mode Palette
+    bg_color = "#0d1117"
+    border_color = "#30363d"
+    text_primary = "#e6edf3"
+    text_secondary = "#8b949e"
     
     grade = compute_grade(stats)
-    accent = get_grade_color(grade)
+    accent = get_grade_color(grade) # Dynamic color based on grade
 
     rows = [
         ("☆", f"Total Stars Earned:", stats["stars"]),
