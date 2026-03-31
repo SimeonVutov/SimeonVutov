@@ -103,28 +103,19 @@ def generate_svg(lang_totals, top_n=8):
         segments.append((lang, pct, seg_width, x, color))
         x += seg_width
 
-    total_duration = 1.8  # seconds for full bar to load
+    seg_dur = 0.4  # each segment takes 0.4s to grow
 
     bar_parts = []
-    cumulative_pct = 0
+    cumulative_delay = 0
     for i, (lang, pct, seg_width, sx, color) in enumerate(segments):
-        delay = round(cumulative_pct / 100 * total_duration, 3)
-        dur = round(pct / 100 * total_duration, 3)
-        cumulative_pct += pct
-
-        # clip each segment growing from its own left edge
-        clip_id = f"clip{i}"
-        bar_parts.append(f'''
-  <clipPath id="{clip_id}">
-    <rect x="{sx}" y="{title_height}" width="{seg_width}" height="{bar_section_height}">
-      <animate attributeName="width" from="0" to="{seg_width}" dur="{dur}s" begin="{delay}s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>''')
+        delay = round(cumulative_delay, 3)
+        cumulative_delay += seg_dur
 
         rx_attr = 'rx="3" ry="3"' if i == 0 or i == len(segments) - 1 else ''
         bar_parts.append(
-            f'  <rect x="{sx}" y="{title_height}" width="{seg_width}" height="{bar_section_height}" '
-            f'fill="{color}" {rx_attr} clip-path="url(#{clip_id})"/>'
+            f'  <rect x="{sx}" y="{title_height}" width="0" height="{bar_section_height}" fill="{color}" {rx_attr}>'
+            f'<animate attributeName="width" from="0" to="{seg_width}" dur="{seg_dur}s" begin="{delay}s" fill="freeze"/>'
+            f'</rect>'
         )
 
     legend_items = []
@@ -137,8 +128,9 @@ def generate_svg(lang_totals, top_n=8):
         lx = padding + col * col_width
         ly = legend_start_y + row * lang_row_height + 12
 
-        # stagger legend fade-in after bar finishes
-        fade_delay = round(0.3 + i * 0.08, 2)
+        # stagger legend fade-in after all bars finish
+        bars_total_dur = len(segments) * seg_dur
+        fade_delay = round(bars_total_dur + i * 0.1, 2)
         legend_items.append(f'''
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="{fade_delay}s" fill="freeze"/>
