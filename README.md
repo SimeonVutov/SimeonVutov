@@ -52,14 +52,8 @@ My passion lies in low-level systems and understanding how software interacts di
 ![](https://nirzak-streak-stats.vercel.app/?user=SimeonVutov&theme=dark&hide_border=true)<br/>
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=SimeonVutov&theme=dark&hide_border=true&include_all_commits=false&count_private=true&layout=compact)
 
-# Stats test!!!
-## 🐍 Contribution Snake
-![snake animation](https://github.com/SimeonVutov/SimeonVutov/blob/output/github-contribution-grid-snake-dark.svg)
+![snake animation](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/snake-output/github-contribution-grid-snake-dark.svg)
 
-## 📈 3D Contribution Calendar
-![](https://github.com/SimeonVutov/SimeonVutov/blob/main/profile-3d-contrib/profile-night-rainbow.svg)
-
-### ✍️ Random Dev Quote
-![](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=dark)
+![](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/3d-contrib-output/profile-night-rainbow.svg)
 
 <!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
