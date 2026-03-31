@@ -11,29 +11,77 @@ HEADERS = {
 }
 
 COLORS = {
+    # Systems / Low-level
     "C": "#555555",
     "C++": "#f34b7d",
-    "Python": "#3572A5",
-    "JavaScript": "#f1e05a",
-    "TypeScript": "#2b7489",
+    "Assembly": "#6E4C13",
     "Rust": "#dea584",
-    "Go": "#00ADD8",
+    "Zig": "#ec915c",
+    "VHDL": "#adb2cb",
+    "Verilog": "#b2b7f8",
+    "SystemVerilog": "#DAE1C2",
+    "Ada": "#02f88c",
+    "Fortran": "#4d41b1",
+    "D": "#ba595e",
+
+    # Scripting / Shell
+    "Shell": "#89e051",
+    "Bash": "#89e051",
+    "PowerShell": "#012456",
+    "Lua": "#000080",
+    "Perl": "#0298c3",
+    "Tcl": "#e4cc98",
+    "Awk": "#c30e9b",
+
+    # General purpose
+    "Python": "#3572A5",
     "Java": "#b07219",
     "Scala": "#c22d40",
-    "Shell": "#89e051",
-    "Lua": "#000080",
-    "HTML": "#e34c26",
-    "CSS": "#563d7c",
-    "Assembly": "#6E4C13",
-    "VHDL": "#adb2cb",
-    "Makefile": "#427819",
-    "Nix": "#7e7eff",
     "Kotlin": "#F18E33",
+    "Go": "#00ADD8",
     "Swift": "#ffac45",
     "Ruby": "#701516",
     "PHP": "#4F5D95",
     "Haskell": "#5e5086",
-    "Zig": "#ec915c",
+    "Elixir": "#6e4a7e",
+    "Erlang": "#B83998",
+    "Clojure": "#db5855",
+    "OCaml": "#ef7a08",
+    "F#": "#b845fc",
+    "Crystal": "#000100",
+    "Nim": "#ffc200",
+    "Dart": "#00B4AB",
+    "Groovy": "#e69f56",
+
+    # Web
+    "JavaScript": "#f1e05a",
+    "TypeScript": "#2b7489",
+    "HTML": "#e34c26",
+    "CSS": "#563d7c",
+    "SCSS": "#c6538c",
+    "Sass": "#a53b70",
+    "CoffeeScript": "#244776",
+    "WebAssembly": "#04133b",
+
+    # Data / Scientific
+    "R": "#198CE7",
+    "Julia": "#a270ba",
+    "MATLAB": "#e16737",
+    "Jupyter Notebook": "#DA5B0B",
+
+    # Infrastructure / Config
+    "Makefile": "#427819",
+    "CMake": "#DA3434",
+    "Dockerfile": "#384d54",
+    "Nix": "#7e7eff",
+    "HCL": "#844FBA",
+    "Nushell": "#4E9906",
+
+    # Markup / Data
+    "Markdown": "#083fa1",
+    "YAML": "#cb171e",
+    "TOML": "#9c4221",
+    "JSON": "#292929",
 }
 
 DEFAULT_COLOR = "#8b949e"
