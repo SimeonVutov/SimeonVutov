@@ -7,114 +7,66 @@
   <text x="16" y="26" class="title">Most Used Languages</text>
   <!-- bar background -->
   <rect x="16" y="40" width="268" height="12" rx="3" fill="#21262d"/>
-
-  <clipPath id="clip0">
-    <rect x="16" y="40" width="101.46" height="12">
-      <animate attributeName="width" from="0" to="101.46" dur="0.681s" begin="0.0s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>
-  <rect x="16" y="40" width="101.46" height="12" fill="#b07219" rx="3" ry="3" clip-path="url(#clip0)"/>
-
-  <clipPath id="clip1">
-    <rect x="117.46" y="40" width="51.4" height="12">
-      <animate attributeName="width" from="0" to="51.4" dur="0.345s" begin="0.681s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>
-  <rect x="117.46" y="40" width="51.4" height="12" fill="#f34b7d"  clip-path="url(#clip1)"/>
-
-  <clipPath id="clip2">
-    <rect x="168.85999999999999" y="40" width="37.28" height="12">
-      <animate attributeName="width" from="0" to="37.28" dur="0.25s" begin="1.027s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>
-  <rect x="168.85999999999999" y="40" width="37.28" height="12" fill="#3572A5"  clip-path="url(#clip2)"/>
-
-  <clipPath id="clip3">
-    <rect x="206.14" y="40" width="29.72" height="12">
-      <animate attributeName="width" from="0" to="29.72" dur="0.2s" begin="1.277s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>
-  <rect x="206.14" y="40" width="29.72" height="12" fill="#f1e05a"  clip-path="url(#clip3)"/>
-
-  <clipPath id="clip4">
-    <rect x="235.85999999999999" y="40" width="17.42" height="12">
-      <animate attributeName="width" from="0" to="17.42" dur="0.117s" begin="1.477s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>
-  <rect x="235.85999999999999" y="40" width="17.42" height="12" fill="#555555"  clip-path="url(#clip4)"/>
-
-  <clipPath id="clip5">
-    <rect x="253.27999999999997" y="40" width="13.88" height="12">
-      <animate attributeName="width" from="0" to="13.88" dur="0.093s" begin="1.594s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>
-  <rect x="253.27999999999997" y="40" width="13.88" height="12" fill="#8b949e"  clip-path="url(#clip5)"/>
-
-  <clipPath id="clip6">
-    <rect x="267.15999999999997" y="40" width="9.17" height="12">
-      <animate attributeName="width" from="0" to="9.17" dur="0.062s" begin="1.687s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>
-  <rect x="267.15999999999997" y="40" width="9.17" height="12" fill="#6E4C13"  clip-path="url(#clip6)"/>
-
-  <clipPath id="clip7">
-    <rect x="276.33" y="40" width="7.66" height="12">
-      <animate attributeName="width" from="0" to="7.66" dur="0.051s" begin="1.749s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
-    </rect>
-  </clipPath>
-  <rect x="276.33" y="40" width="7.66" height="12" fill="#89e051" rx="3" ry="3" clip-path="url(#clip7)"/>
+  <rect x="16" y="40" width="0" height="12" fill="#b07219" rx="3" ry="3"><animate attributeName="width" from="0" to="101.49" dur="0.4s" begin="0s" fill="freeze"/></rect>
+  <rect x="117.49" y="40" width="0" height="12" fill="#f34b7d" ><animate attributeName="width" from="0" to="51.43" dur="0.4s" begin="0.4s" fill="freeze"/></rect>
+  <rect x="168.92" y="40" width="0" height="12" fill="#3572A5" ><animate attributeName="width" from="0" to="37.25" dur="0.4s" begin="0.8s" fill="freeze"/></rect>
+  <rect x="206.17" y="40" width="0" height="12" fill="#f1e05a" ><animate attributeName="width" from="0" to="29.72" dur="0.4s" begin="1.2s" fill="freeze"/></rect>
+  <rect x="235.89" y="40" width="0" height="12" fill="#555555" ><animate attributeName="width" from="0" to="17.42" dur="0.4s" begin="1.6s" fill="freeze"/></rect>
+  <rect x="253.31" y="40" width="0" height="12" fill="#8b949e" ><animate attributeName="width" from="0" to="13.91" dur="0.4s" begin="2.0s" fill="freeze"/></rect>
+  <rect x="267.22" y="40" width="0" height="12" fill="#6E4C13" ><animate attributeName="width" from="0" to="9.17" dur="0.4s" begin="2.4s" fill="freeze"/></rect>
+  <rect x="276.39000000000004" y="40" width="0" height="12" fill="#89e051" rx="3" ry="3"><animate attributeName="width" from="0" to="7.66" dur="0.4s" begin="2.8s" fill="freeze"/></rect>
 
   <g opacity="0">
-    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.3s" fill="freeze"/>
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="3.2s" fill="freeze"/>
     <circle cx="21.0" cy="78" r="4" fill="#b07219"/>
     <text x="30.0" y="81" fill="#e6edf3" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif">Java</text>
-    <text x="146.0" y="81" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">37.86%</text>
+    <text x="146.0" y="81" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">37.87%</text>
   </g>
 
   <g opacity="0">
-    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.38s" fill="freeze"/>
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="3.3s" fill="freeze"/>
     <circle cx="155.0" cy="78" r="4" fill="#f34b7d"/>
     <text x="164.0" y="81" fill="#e6edf3" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif">C++</text>
-    <text x="280.0" y="81" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">19.18%</text>
+    <text x="280.0" y="81" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">19.19%</text>
   </g>
 
   <g opacity="0">
-    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.46s" fill="freeze"/>
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="3.4s" fill="freeze"/>
     <circle cx="21.0" cy="100" r="4" fill="#3572A5"/>
     <text x="30.0" y="103" fill="#e6edf3" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif">Python</text>
-    <text x="146.0" y="103" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">13.91%</text>
+    <text x="146.0" y="103" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">13.9%</text>
   </g>
 
   <g opacity="0">
-    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.54s" fill="freeze"/>
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="3.5s" fill="freeze"/>
     <circle cx="155.0" cy="100" r="4" fill="#f1e05a"/>
     <text x="164.0" y="103" fill="#e6edf3" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif">JavaScript</text>
     <text x="280.0" y="103" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">11.09%</text>
   </g>
 
   <g opacity="0">
-    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.62s" fill="freeze"/>
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="3.6s" fill="freeze"/>
     <circle cx="21.0" cy="122" r="4" fill="#555555"/>
     <text x="30.0" y="125" fill="#e6edf3" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif">C</text>
     <text x="146.0" y="125" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">6.5%</text>
   </g>
 
   <g opacity="0">
-    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.7s" fill="freeze"/>
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="3.7s" fill="freeze"/>
     <circle cx="155.0" cy="122" r="4" fill="#8b949e"/>
     <text x="164.0" y="125" fill="#e6edf3" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif">C#</text>
-    <text x="280.0" y="125" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">5.18%</text>
+    <text x="280.0" y="125" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">5.19%</text>
   </g>
 
   <g opacity="0">
-    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.78s" fill="freeze"/>
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="3.8s" fill="freeze"/>
     <circle cx="21.0" cy="144" r="4" fill="#6E4C13"/>
     <text x="30.0" y="147" fill="#e6edf3" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif">Assembly</text>
     <text x="146.0" y="147" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">3.42%</text>
   </g>
 
   <g opacity="0">
-    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.86s" fill="freeze"/>
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="3.9s" fill="freeze"/>
     <circle cx="155.0" cy="144" r="4" fill="#89e051"/>
     <text x="164.0" y="147" fill="#e6edf3" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif">Shell</text>
     <text x="280.0" y="147" fill="#8b949e" font-size="11" font-family="'Segoe UI',Ubuntu,Sans-Serif" text-anchor="end">2.86%</text>
