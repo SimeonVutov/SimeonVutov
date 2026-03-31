@@ -199,19 +199,33 @@ def compute_grade(stats):
     if score >= 50:   return "D"
     return "F"
 
+def get_grade_color(grade):
+    colors = {
+        "S": "#8250df",     # Purple
+        "A+": "#2da44e",    # Green
+        "A": "#2da44e",
+        "A-": "#2da44e",
+        "B+": "#bf8700",    # Yellow/Orange
+        "B": "#bf8700",
+        "C+": "#cf222e",    # Red
+        "C": "#cf222e",
+        "D": "#6e7781",     # Gray
+        "F": "#6e7781"
+    }
+    return colors.get(grade, "#2da44e") # Defaults to green
+
 def generate_stats_svg(stats):
     card_width = 400
     card_height = 140
     padding = 20
-
-    card_width = 400
-    card_height = 140
-    padding = 20
     
-    accent = "#39d353"
-    text_primary = "#c9d1d9"
-
+    bg_color = "#ffffff"
+    border_color = "#d0d7de"
+    text_primary = "#24292f"
+    text_secondary = "#57606a"
+    
     grade = compute_grade(stats)
+    accent = get_grade_color(grade)
 
     rows = [
         ("☆", f"Total Stars Earned:", stats["stars"]),
@@ -229,21 +243,19 @@ def generate_stats_svg(stats):
         items_str += (
             f'<text x="{padding}" y="{y}" fill="{accent}" font-size="12" '
             f'font-family="\'Segoe UI\',Ubuntu,Sans-Serif">{icon}</text>'
-            f'<text x="{padding + 16}" y="{y}" fill="{accent}" font-size="12" font-weight="600" '
+            f'<text x="{padding + 16}" y="{y}" fill="{text_primary}" font-size="12" font-weight="600" '
             f'font-family="\'Segoe UI\',Ubuntu,Sans-Serif">{label}</text>'
-            f'<text x="230" y="{y}" fill="{text_primary}" font-size="12" '
+            f'<text x="230" y="{y}" fill="{text_secondary}" font-size="12" font-weight="600" '
             f'font-family="\'Segoe UI\',Ubuntu,Sans-Serif">{value}</text>'
         )
 
-    # grade circle
     cx, cy, r = 340, card_height // 2, 38
     circumference = 2 * math.pi * r
-    # filled arc (270 deg = 75%)
     dash = round(circumference * 0.75, 2)
     gap = round(circumference - dash, 2)
 
     grade_svg = (
-        f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#30363d" stroke-width="5"/>'
+        f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{border_color}" stroke-width="5"/>'
         f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{accent}" stroke-width="5" '
         f'stroke-dasharray="{dash} {gap}" stroke-linecap="round" '
         f'transform="rotate(-90 {cx} {cy})"/>'
@@ -252,13 +264,12 @@ def generate_stats_svg(stats):
     )
 
     return f'''<svg width="{card_width}" height="{card_height}" viewBox="0 0 {card_width} {card_height}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="{card_width}" height="{card_height}" rx="6" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
-  <text x="{padding}" y="26" fill="{accent}" font-size="14" font-weight="700"
+  <rect width="{card_width}" height="{card_height}" rx="6" fill="{bg_color}" stroke="{border_color}" stroke-width="1"/>
+  <text x="{padding}" y="26" fill="{text_primary}" font-size="14" font-weight="700"
     font-family="'Segoe UI',Ubuntu,Sans-Serif">{USERNAME}'s GitHub Stats</text>
   {items_str}
   {grade_svg}
 </svg>'''
-
 
 def generate_languages_svg(lang_totals, top_n=8):
     sorted_langs = sorted(lang_totals.items(), key=lambda x: x[1], reverse=True)[:top_n]
