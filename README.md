@@ -48,12 +48,13 @@ My passion lies in low-level systems and understanding how software interacts di
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 
 # 📊 GitHub Stats:
+## 💻 Most Used Languages
+![](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/main/stats/languages.svg)
 ![](https://github-readme-stats.vercel.app/api?username=SimeonVutov&theme=dark&hide_border=true&include_all_commits=false&count_private=true)<br/>
 ![](https://nirzak-streak-stats.vercel.app/?user=SimeonVutov&theme=dark&hide_border=true)<br/>
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=SimeonVutov&theme=dark&hide_border=true&include_all_commits=false&count_private=true&layout=compact)
 
 ![snake animation](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/snake-output/github-contribution-grid-snake-dark.svg)
 
-![](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/3d-contrib-output/profile-night-rainbow.svg)
-
+<!-- ![](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/3d-contrib-output/profile-night-rainbow.svg) -->
 <!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
