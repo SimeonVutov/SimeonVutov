@@ -48,10 +48,11 @@ My passion lies in low-level systems and understanding how software interacts di
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 
 ## 📊 GitHub Stats
-![](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/main/stats/github-stats.svg)
-
-## 💻 Most Used Languages
-![](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/main/stats/languages.svg)
+<p align="center">
+  <img align="middle" src="https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/main/stats/languages.svg" alt="Simeon's Top Languages" />
+  &emsp;&emsp;&emsp;&emsp;
+  <img align="middle" src="https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/main/stats/github-stats.svg" alt="Simeon's GitHub Stats" />
+</p>
 
 ![snake animation](https://raw.githubusercontent.com/SimeonVutov/SimeonVutov/snake-output/github-contribution-grid-snake-dark.svg)
 
