@@ -12,28 +12,78 @@ HEADERS = {
 }
 
 COLORS = {
-    "C": "#555555", "C++": "#f34b7d", "Assembly": "#6E4C13",
-    "Rust": "#dea584", "Zig": "#ec915c", "VHDL": "#adb2cb",
-    "Verilog": "#b2b7f8", "SystemVerilog": "#DAE1C2", "Ada": "#02f88c",
-    "Fortran": "#4d41b1", "D": "#ba595e", "Shell": "#89e051",
-    "Bash": "#89e051", "PowerShell": "#012456", "Lua": "#000080",
-    "Perl": "#0298c3", "Tcl": "#e4cc98", "Awk": "#c30e9b",
-    "Python": "#3572A5", "Java": "#b07219", "Scala": "#c22d40",
-    "Kotlin": "#F18E33", "Go": "#00ADD8", "Swift": "#ffac45",
-    "Ruby": "#701516", "PHP": "#4F5D95", "Haskell": "#5e5086",
-    "Elixir": "#6e4a7e", "Erlang": "#B83998", "Clojure": "#db5855",
-    "OCaml": "#ef7a08", "F#": "#b845fc", "Crystal": "#000100",
-    "Nim": "#ffc200", "Dart": "#00B4AB", "Groovy": "#e69f56",
-    "JavaScript": "#f1e05a", "TypeScript": "#2b7489", "HTML": "#e34c26",
-    "CSS": "#563d7c", "SCSS": "#c6538c", "Sass": "#a53b70",
-    "CoffeeScript": "#244776", "WebAssembly": "#04133b",
-    "R": "#198CE7", "Julia": "#a270ba", "MATLAB": "#e16737",
-    "Jupyter Notebook": "#DA5B0B", "Makefile": "#427819",
-    "CMake": "#DA3434", "Dockerfile": "#384d54", "Nix": "#7e7eff",
-    "HCL": "#844FBA", "Markdown": "#083fa1", "YAML": "#cb171e",
-    "TOML": "#9c4221", "JSON": "#292929",
-}
+    # Systems / Low-level
+    "C": "#555555",
+    "C++": "#f34b7d",
+    "Assembly": "#6E4C13",
+    "Rust": "#dea584",
+    "Zig": "#ec915c",
+    "VHDL": "#adb2cb",
+    "Verilog": "#b2b7f8",
+    "SystemVerilog": "#DAE1C2",
+    "Ada": "#02f88c",
+    "Fortran": "#4d41b1",
+    "D": "#ba595e",
 
+    # Scripting / Shell
+    "Shell": "#89e051",
+    "Bash": "#89e051",
+    "PowerShell": "#012456",
+    "Lua": "#000080",
+    "Perl": "#0298c3",
+    "Tcl": "#e4cc98",
+    "Awk": "#c30e9b",
+
+    # General purpose
+    "Python": "#3572A5",
+    "Java": "#b07219",
+    "Scala": "#c22d40",
+    "Kotlin": "#F18E33",
+    "Go": "#00ADD8",
+    "Swift": "#ffac45",
+    "Ruby": "#701516",
+    "PHP": "#4F5D95",
+    "Haskell": "#5e5086",
+    "Elixir": "#6e4a7e",
+    "Erlang": "#B83998",
+    "Clojure": "#db5855",
+    "OCaml": "#ef7a08",
+    "F#": "#b845fc",
+    "Crystal": "#000100",
+    "Nim": "#ffc200",
+    "Dart": "#00B4AB",
+    "Groovy": "#e69f56",
+
+    # Web
+    "JavaScript": "#f1e05a",
+    "TypeScript": "#2b7489",
+    "HTML": "#e34c26",
+    "CSS": "#563d7c",
+    "SCSS": "#c6538c",
+    "Sass": "#a53b70",
+    "CoffeeScript": "#244776",
+    "WebAssembly": "#04133b",
+
+    # Data / Scientific
+    "R": "#198CE7",
+    "Julia": "#a270ba",
+    "MATLAB": "#e16737",
+    "Jupyter Notebook": "#DA5B0B",
+
+    # Infrastructure / Config
+    "Makefile": "#427819",
+    "CMake": "#DA3434",
+    "Dockerfile": "#384d54",
+    "Nix": "#7e7eff",
+    "HCL": "#844FBA",
+    "Nushell": "#4E9906",
+
+    # Markup / Data
+    "Markdown": "#083fa1",
+    "YAML": "#cb171e",
+    "TOML": "#9c4221",
+    "JSON": "#292929",
+}
 DEFAULT_COLOR = "#8b949e"
 
 
@@ -132,29 +182,34 @@ def fetch_github_stats(repos):
 def compute_grade(stats):
     score = (
         stats["stars"] * 4 +
-        stats["commits"] * 1.65 +
-        stats["prs"] * 3 +
+        stats["commits"] * 1.45 +
+        stats["prs"] * 2.5 +
         stats["issues"] * 1 +
-        stats["contributed_to"] * 1
+        stats["contributed_to"] * 2
     )
-    if score >= 1800: return "S"
-    if score >= 1200: return "A+"
-    if score >= 800:  return "A"
-    if score >= 600:  return "A-"
-    if score >= 400:  return "B+"
-    if score >= 200:  return "B"
-    if score >= 100:  return "C+"
-    return "C"
-
+    
+    if score >= 5000: return "S"
+    if score >= 3500: return "A+"
+    if score >= 2000: return "A"
+    if score >= 1000: return "A-"
+    if score >= 600:  return "B+"
+    if score >= 400:  return "B"
+    if score >= 200:  return "C+"
+    if score >= 100:  return "C"
+    if score >= 50:   return "D"
+    return "F"
 
 def generate_stats_svg(stats):
     card_width = 400
     card_height = 140
     padding = 20
-    accent = "#38bcad"
-    text_primary = "#e6edf3"
-    text_muted = "#8b949e"
-    icon_color = "#7b3fbe"
+
+    card_width = 400
+    card_height = 140
+    padding = 20
+    
+    accent = "#39d353"
+    text_primary = "#c9d1d9"
 
     grade = compute_grade(stats)
 
