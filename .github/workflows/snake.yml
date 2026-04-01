@@ -9,6 +9,7 @@ jobs:
       - uses: Platane/snk@v3
         with:
           github_user_name: SimeonVutov
+          github_token: ${{ secrets.STATS_TOKEN }}
           outputs: |
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
       - uses: crazy-max/ghaction-github-pages@v3
