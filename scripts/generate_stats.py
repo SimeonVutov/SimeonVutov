@@ -1,16 +1,10 @@
 import os
 import requests
 import math
-import datetime
 
-# --- Configuration ---
-TOKEN = os.environ.get("GITHUB_TOKEN")
+TOKEN = os.environ["GITHUB_TOKEN"]
 USERNAME = os.environ.get("GITHUB_USERNAME", "SimeonVutov")
-CURRENT_YEAR = datetime.datetime.now().year
-
-# Check for token
-if not TOKEN:
-    raise ValueError("GITHUB_TOKEN is missing! Ensure it's passed in the workflow env.")
+CURRENT_YEAR = 2026
 
 HEADERS = {
     "Authorization": f"token {TOKEN}",
@@ -18,32 +12,29 @@ HEADERS = {
 }
 
 COLORS = {
-    # Systems / Low-level
     "C": "#555555", "C++": "#f34b7d", "Assembly": "#6E4C13",
     "Rust": "#dea584", "Zig": "#ec915c", "VHDL": "#adb2cb",
     "Verilog": "#b2b7f8", "SystemVerilog": "#DAE1C2", "Ada": "#02f88c",
     "Fortran": "#4d41b1", "D": "#ba595e",
-    # Scripting / Shell
     "Shell": "#89e051", "Bash": "#89e051", "PowerShell": "#012456",
     "Lua": "#000080", "Perl": "#0298c3", "Tcl": "#e4cc98", "Awk": "#c30e9b",
-    # General purpose / Software
     "Python": "#3572A5", "Java": "#b07219", "Scala": "#c22d40",
     "Kotlin": "#F18E33", "Go": "#00ADD8", "Swift": "#ffac45",
-    "C#": "#178600", "Dart": "#00B4AB",
-    # Web
+    "Ruby": "#701516", "PHP": "#4F5D95", "Haskell": "#5e5086",
+    "Elixir": "#6e4a7e", "Erlang": "#B83998", "Clojure": "#db5855",
+    "OCaml": "#ef7a08", "F#": "#b845fc", "Crystal": "#000100",
+    "Nim": "#ffc200", "Dart": "#00B4AB", "Groovy": "#e69f56",
     "JavaScript": "#f1e05a", "TypeScript": "#2b7489", "HTML": "#e34c26",
-    "CSS": "#563d7c", "SCSS": "#c6538c", "WebAssembly": "#04133b",
-    # Data / Persistence
-    "R": "#198CE7", "Julia": "#a270ba", "MariaDB": "#003545", "SQLite": "#07405e",
-    "NumPy": "#013243", "Jupyter Notebook": "#DA5B0B",
-    # Infrastructure
+    "CSS": "#563d7c", "SCSS": "#c6538c", "Sass": "#a53b70",
+    "CoffeeScript": "#244776", "WebAssembly": "#04133b",
+    "R": "#198CE7", "Julia": "#a270ba", "MATLAB": "#e16737",
+    "Jupyter Notebook": "#DA5B0B",
     "Makefile": "#427819", "CMake": "#DA3434", "Dockerfile": "#384d54",
-    "YAML": "#cb171e", "JSON": "#292929",
+    "Nix": "#7e7eff", "HCL": "#844FBA", "Nushell": "#4E9906",
+    "Markdown": "#083fa1", "YAML": "#cb171e", "TOML": "#9c4221", "JSON": "#292929",
 }
-
 DEFAULT_COLOR = "#8b949e"
 
-# --- Data Fetching ---
 
 def fetch_all_repos():
     repos = []
@@ -53,76 +44,104 @@ def fetch_all_repos():
             f"https://api.github.com/user/repos?visibility=all&affiliation=owner&per_page=100&page={page}",
             headers=HEADERS
         )
-        if not resp.ok: return repos
         data = resp.json()
-        if not data or not isinstance(data, list): break
+        if not resp.ok:
+            raise Exception(f"GitHub API error {resp.status_code}: {data.get('message', data)}")
+        if not isinstance(data, list):
+            raise Exception(f"Unexpected response: {data}")
+        if not data:
+            break
         repos.extend(data)
-        if len(data) < 100: break
+        if len(data) < 100:
+            break
         page += 1
     return repos
 
+
 def fetch_languages(repo):
     resp = requests.get(repo["languages_url"], headers=HEADERS)
-    return resp.json() if resp.ok else {}
+    return resp.json()
+
 
 def aggregate_languages(repos):
     totals = {}
     for repo in repos:
-        if repo.get("fork"): continue
+        if repo.get("fork"):
+            continue
         langs = fetch_languages(repo)
         for lang, byte_count in langs.items():
-            if isinstance(byte_count, int):
-                totals[lang] = totals.get(lang, 0) + byte_count
+            totals[lang] = totals.get(lang, 0) + byte_count
     return totals
 
+
 def fetch_github_stats(repos):
-    """Uses GraphQL for real-time contribution tracking to bypass Search indexing lag."""
     total_stars = sum(r.get("stargazers_count", 0) for r in repos if not r.get("fork"))
 
+    # GraphQL reads ALL commits including private repos
     query = """
     query($username: String!, $from: DateTime!, $to: DateTime!) {
       user(login: $username) {
         contributionsCollection(from: $from, to: $to) {
           totalCommitContributions
-          totalPullRequestContributions
-          totalIssueContributions
+          restrictedContributionsCount
         }
-        # Lifetime totals for PRs and Issues
-        pullRequests { totalCount }
-        issues { totalCount }
+        pullRequests(first: 1) { totalCount }
+        issues(first: 1) { totalCount }
       }
     }
     """
     variables = {
         "username": USERNAME,
         "from": f"{CURRENT_YEAR}-01-01T00:00:00Z",
-        "to": f"{CURRENT_YEAR}-12-31T23:59:59Z"
+        "to":   f"{CURRENT_YEAR}-12-31T23:59:59Z",
     }
 
-    resp = requests.post("https://api.github.com/graphql", headers=HEADERS, json={"query": query, "variables": variables})
-    
-    commits, prs, issues = 0, 0, 0
-    if resp.ok:
-        u = resp.json().get("data", {}).get("user", {})
-        c_coll = u.get("contributionsCollection", {})
-        commits = c_coll.get("totalCommitContributions", 0)
-        prs = u.get("pullRequests", {}).get("totalCount", 0)
-        issues = u.get("issues", {}).get("totalCount", 0)
+    gql_headers = {**HEADERS, "Accept": "application/json"}
+    resp = requests.post(
+        "https://api.github.com/graphql",
+        headers=gql_headers,
+        json={"query": query, "variables": variables}
+    )
 
-    # Contributed to (repos pushed to but doesn't own)
-    events_resp = requests.get(f"https://api.github.com/users/{USERNAME}/events?per_page=100", headers=HEADERS)
+    total_commits = 0
+    total_prs = 0
+    total_issues = 0
+
+    if resp.ok:
+        data = resp.json()
+        if "errors" in data:
+            print(f"GraphQL errors: {data['errors']}")
+        user = data.get("data", {}).get("user", {})
+        cc = user.get("contributionsCollection", {})
+        # public commits + private commits (restrictedContributionsCount)
+        total_commits = (
+            cc.get("totalCommitContributions", 0) +
+            cc.get("restrictedContributionsCount", 0)
+        )
+        total_prs = user.get("pullRequests", {}).get("totalCount", 0)
+        total_issues = user.get("issues", {}).get("totalCount", 0)
+    else:
+        print(f"GraphQL request failed: {resp.status_code} {resp.text}")
+
+    events_resp = requests.get(
+        f"https://api.github.com/users/{USERNAME}/events?per_page=100",
+        headers=HEADERS
+    )
     events = events_resp.json() if events_resp.ok else []
-    contrib_repos = {e.get("repo", {}).get("name") for e in events if e.get("repo") and not e["repo"]["name"].startswith(f"{USERNAME}/")}
-    
+    contributed_repos = set()
+    for event in events:
+        repo_name = event.get("repo", {}).get("name", "")
+        if repo_name and not repo_name.startswith(f"{USERNAME}/"):
+            contributed_repos.add(repo_name)
+
     return {
         "stars": total_stars,
-        "commits": commits,
-        "prs": prs,
-        "issues": issues,
-        "contributed_to": len(contrib_repos),
+        "commits": total_commits,
+        "prs": total_prs,
+        "issues": total_issues,
+        "contributed_to": len(contributed_repos),
     }
 
-# --- Logic & SVG Generation ---
 
 def compute_grade(stats):
     score = (
@@ -143,18 +162,25 @@ def compute_grade(stats):
     if score >= 50:   return "D"
     return "F"
 
+
 def get_grade_color(grade):
     colors = {
-        "S": "#bc8cff", "A+": "#39d353", "A": "#39d353", "A-": "#39d353",
-        "B+": "#e3b341", "B": "#e3b341", "C+": "#f85149", "C": "#f85149",
-        "D": "#8b949e", "F": "#8b949e"
+        "S":  "#bc8cff", "A+": "#39d353", "A":  "#39d353", "A-": "#39d353",
+        "B+": "#e3b341", "B":  "#e3b341", "C+": "#f85149", "C":  "#f85149",
+        "D":  "#8b949e", "F":  "#8b949e",
     }
     return colors.get(grade, "#39d353")
 
+
 def generate_stats_svg(stats):
-    card_width, card_height, padding = 400, 140, 20
-    bg, border, p_text, s_text = "#0d1117", "#30363d", "#e6edf3", "#8b949e"
-    
+    card_width = 400
+    card_height = 140
+    padding = 20
+    bg_color = "#0d1117"
+    border_color = "#30363d"
+    text_primary = "#e6edf3"
+    text_secondary = "#8b949e"
+
     grade = compute_grade(stats)
     accent = get_grade_color(grade)
 
@@ -170,67 +196,124 @@ def generate_stats_svg(stats):
     for i, (icon, label, value) in enumerate(rows):
         y = 42 + i * 19
         items_str += (
-            f'<text x="{padding}" y="{y}" fill="{accent}" font-size="12" font-family="\'Segoe UI\',Ubuntu,Sans-Serif">{icon}</text>'
-            f'<text x="{padding + 16}" y="{y}" fill="{p_text}" font-size="12" font-weight="600" font-family="\'Segoe UI\',Sans-Serif">{label}</text>'
-            f'<text x="230" y="{y}" fill="{s_text}" font-size="12" font-weight="600" font-family="\'Segoe UI\',Sans-Serif">{value}</text>'
+            f'<text x="{padding}" y="{y}" fill="{accent}" font-size="12" '
+            f'font-family="\'Segoe UI\',Ubuntu,Sans-Serif">{icon}</text>'
+            f'<text x="{padding + 16}" y="{y}" fill="{text_primary}" font-size="12" font-weight="600" '
+            f'font-family="\'Segoe UI\',Ubuntu,Sans-Serif">{label}</text>'
+            f'<text x="230" y="{y}" fill="{text_secondary}" font-size="12" font-weight="600" '
+            f'font-family="\'Segoe UI\',Ubuntu,Sans-Serif">{value}</text>'
         )
 
-    cx, cy, r = 340, 70, 38
-    dash = round(2 * math.pi * r * 0.75, 2)
-    gap = round(2 * math.pi * r - dash, 2)
+    cx, cy, r = 340, card_height // 2, 38
+    circumference = 2 * math.pi * r
+    dash = round(circumference * 0.75, 2)
+    gap = round(circumference - dash, 2)
+
+    grade_svg = (
+        f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{border_color}" stroke-width="5"/>'
+        f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{accent}" stroke-width="5" '
+        f'stroke-dasharray="{dash} {gap}" stroke-linecap="round" '
+        f'transform="rotate(-90 {cx} {cy})"/>'
+        f'<text x="{cx}" y="{cy + 6}" fill="{accent}" font-size="18" font-weight="700" '
+        f'font-family="\'Segoe UI\',Ubuntu,Sans-Serif" text-anchor="middle">{grade}</text>'
+    )
 
     return f'''<svg width="{card_width}" height="{card_height}" viewBox="0 0 {card_width} {card_height}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="{card_width}" height="{card_height}" rx="6" fill="{bg}" stroke="{border}" stroke-width="1"/>
-  <text x="{padding}" y="26" fill="{p_text}" font-size="14" font-weight="700" font-family="'Segoe UI',Sans-Serif">{USERNAME}'s GitHub Stats</text>
+  <rect width="{card_width}" height="{card_height}" rx="6" fill="{bg_color}" stroke="{border_color}" stroke-width="1"/>
+  <text x="{padding}" y="26" fill="{text_primary}" font-size="14" font-weight="700"
+    font-family="'Segoe UI',Ubuntu,Sans-Serif">{USERNAME}'s GitHub Stats</text>
   {items_str}
-  <circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{border}" stroke-width="5"/>
-  <circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{accent}" stroke-width="5" stroke-dasharray="{dash} {gap}" stroke-linecap="round" transform="rotate(-90 {cx} {cy})"/>
-  <text x="{cx}" y="{cy + 6}" fill="{accent}" font-size="18" font-weight="700" font-family="'Segoe UI',Sans-Serif" text-anchor="middle">{grade}</text>
+  {grade_svg}
 </svg>'''
+
 
 def generate_languages_svg(lang_totals, top_n=8):
     sorted_langs = sorted(lang_totals.items(), key=lambda x: x[1], reverse=True)[:top_n]
     total_bytes = sum(b for _, b in sorted_langs)
-    if total_bytes == 0: return "<svg></svg>"
+    if total_bytes == 0:
+        return "<svg></svg>"
 
-    items = [(l, b, round(b/total_bytes*100, 2)) for l, b in sorted_langs]
-    card_width, padding, bar_h = 300, 16, 12
-    card_height = 80 + (math.ceil(len(items)/2) * 22)
-    inner_w = card_width - padding*2
+    items = [(lang, b, round(b / total_bytes * 100, 2)) for lang, b in sorted_langs]
+    card_width = 300
+    padding = 16
+    title_height = 40
+    bar_height = 12
+    bar_margin = 18
+    row_height = 22
+    lang_rows = math.ceil(len(items) / 2)
+    legend_height = lang_rows * row_height + 10
+    card_height = title_height + bar_height + bar_margin + legend_height + padding
+    inner_width = card_width - padding * 2
+    col_width = inner_width / 2
 
-    bar_parts = [f'<clipPath id="bc"><rect x="{padding}" y="40" width="{inner_w}" height="{bar_h}" rx="3"/></clipPath>', '<g clip-path="url(#bc)">']
-    x_off = padding
-    for l, _, p in items:
-        w = round(p/100 * inner_w, 2)
-        bar_parts.append(f'<rect x="{x_off}" y="40" width="{w}" height="{bar_h}" fill="{COLORS.get(l, DEFAULT_COLOR)}"/>')
-        x_off += w
+    bar_parts = [
+        f'<clipPath id="barclip">'
+        f'<rect x="{padding}" y="{title_height}" width="{inner_width}" height="{bar_height}" rx="3"/>'
+        f'</clipPath>'
+        f'<g clip-path="url(#barclip)">'
+    ]
+    x = padding
+    for lang, _, pct in items:
+        seg_width = round(pct / 100 * inner_width, 2)
+        color = COLORS.get(lang, DEFAULT_COLOR)
+        bar_parts.append(
+            f'<rect x="{x}" y="{title_height}" width="{seg_width}" height="{bar_height}" fill="{color}"/>'
+        )
+        x += seg_width
     bar_parts.append('</g>')
 
     legend_parts = []
-    for i, (l, _, p) in enumerate(items):
-        lx, ly = padding + (i%2)*(inner_w/2), 70 + (i//2)*22
-        legend_parts.append(f'<circle cx="{lx+5}" cy="{ly-4}" r="4" fill="{COLORS.get(l, DEFAULT_COLOR)}"/>'
-                           f'<text x="{lx+14}" y="{ly-1}" fill="#e6edf3" font-size="11" font-family="\'Segoe UI\',Sans-Serif">{l}</text>'
-                           f'<text x="{lx+(inner_w/2)-4}" y="{ly-1}" fill="#8b949e" font-size="11" font-family="\'Segoe UI\',Sans-Serif" text-anchor="end">{p}%</text>')
+    legend_y = title_height + bar_height + bar_margin
+    for i, (lang, _, pct) in enumerate(items):
+        col = i % 2
+        row = i // 2
+        lx = padding + col * col_width
+        ly = legend_y + row * row_height + 12
+        color = COLORS.get(lang, DEFAULT_COLOR)
+        legend_parts.append(
+            f'<circle cx="{lx + 5}" cy="{ly - 4}" r="4" fill="{color}"/>'
+            f'<text x="{lx + 14}" y="{ly - 1}" fill="#e6edf3" font-size="11" font-family="\'Segoe UI\',Ubuntu,Sans-Serif">{lang}</text>'
+            f'<text x="{lx + col_width - 4}" y="{ly - 1}" fill="#8b949e" font-size="11" font-family="\'Segoe UI\',Ubuntu,Sans-Serif" text-anchor="end">{pct}%</text>'
+        )
+
+    bar_str = "\n  ".join(bar_parts)
+    legend_str = "\n  ".join(legend_parts)
 
     return f'''<svg width="{card_width}" height="{card_height}" viewBox="0 0 {card_width} {card_height}" xmlns="http://www.w3.org/2000/svg">
+  <style>.title {{ font: 600 14px "Segoe UI", Ubuntu, Sans-Serif; fill: #e6edf3; }}</style>
   <rect width="{card_width}" height="{card_height}" rx="6" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
-  <text x="{padding}" y="26" fill="#e6edf3" font-size="14" font-weight="700" font-family="'Segoe UI',Sans-Serif">Most Used Languages</text>
-  <rect x="{padding}" y="40" width="{inner_w}" height="{bar_h}" rx="3" fill="#21262d"/>
-  {"".join(bar_parts)} {"".join(legend_parts)}
+  <text x="{padding}" y="26" class="title">Most Used Languages</text>
+  <rect x="{padding}" y="{title_height}" width="{inner_width}" height="{bar_height}" rx="3" fill="#21262d"/>
+  {bar_str}
+  {legend_str}
 </svg>'''
 
-# --- Main ---
 
 def main():
+    print("Fetching repos...")
     repos = fetch_all_repos()
+    print(f"Found {len(repos)} repos")
+
+    print("Aggregating language data...")
     lang_totals = aggregate_languages(repos)
+    print(f"Languages found: {list(lang_totals.keys())}")
+
+    print("Fetching GitHub stats...")
     stats = fetch_github_stats(repos)
-    
+    print(f"Stats: {stats}")
+
     os.makedirs("stats", exist_ok=True)
-    with open("stats/languages.svg", "w") as f: f.write(generate_languages_svg(lang_totals))
-    with open("stats/github-stats.svg", "w") as f: f.write(generate_stats_svg(stats))
-    print(f"Stats generated for {USERNAME} (Grade: {compute_grade(stats)})")
+
+    print("Generating language SVG...")
+    with open("stats/languages.svg", "w") as f:
+        f.write(generate_languages_svg(lang_totals))
+
+    print("Generating stats SVG...")
+    with open("stats/github-stats.svg", "w") as f:
+        f.write(generate_stats_svg(stats))
+
+    print("Done — stats/languages.svg and stats/github-stats.svg written")
+
 
 if __name__ == "__main__":
     main()
