@@ -13,7 +13,6 @@ My passion lies in low-level systems and understanding how software interacts di
 ### 🛠 Low-Level & Systems
 ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
-![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
 ![AssemblyScript](https://img.shields.io/badge/assembly%20script-%23000000.svg?style=for-the-badge&logo=assemblyscript&logoColor=white)
 ![Assembly AMD](https://img.shields.io/badge/Assembly-AMD-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
 ![VHDL](https://img.shields.io/badge/VHDL-006699?style=for-the-badge)
@@ -23,6 +22,7 @@ My passion lies in low-level systems and understanding how software interacts di
 
 ### 🧑‍💻 General Purpose Languages
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
 ![Scala](https://img.shields.io/badge/scala-%23E32F27.svg?style=for-the-badge&logo=scala&logoColor=white)
 
 ### 🌐 Web & Frameworks
